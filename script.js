@@ -59,8 +59,34 @@ const controls = {
     }
 }
 
-controls.createListeners()
+const list = {
+    create(item) {
+        const div = document.createElement('div')
+        div.classList.add('item')
+        div.innerHTML = item
+
+        html.get('.list').appendChild(div)
+    },
+    update() {
+        html.get('.list').innerHTML = ''
+
+        let page = state.page - 1
+        let start = page * state.perPage
+        let end = start + state.perPage
+
+        const paginateItems = data.slice(start, end)
+
+        paginateItems.forEach(this.create)
+    }
+}
 
 function update() {
-    console.log(state.page)
+    list.update()
 }
+
+function init() {
+    update()
+    controls.createListeners()
+}
+
+init()
